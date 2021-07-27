@@ -5,7 +5,8 @@
 
 ## Contents    
 - [About Process](##About-Process)  
-- [SQL Logic](#SQL-Logic)  
+- [SQL Logic 1](#SQL-Logic-1)  
+- [SQL Logic 2](#SQL-Logic-2)  
 - [Build Info](#Build-Info)  
 - [Author](#Author)  
 - [License](#License)       
@@ -29,7 +30,8 @@
 2. Performing direct queries against the source tables and patching together the results while referencing hard file exports.</p>
 
 <p>Importing formerly exported .XML scans.</p>
-## SQL-Logic
+
+## SQL-Logic-1
 ```SQL
 use [DBA];
 set nocount on
@@ -191,7 +193,7 @@ exec (@main_select)
 ```
  
 <p>Performing direct queries against the source tables.</p>
-## SQL-Logic
+## SQL-Logic-2
 ```SQL
 use master 
 set nocount on
