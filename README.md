@@ -29,9 +29,10 @@
 1. Importing exported .XML scans directly into tables and extrapolating contents.
 2. Performing direct queries against the source tables and patching together the results while referencing hard file exports.</p>
 
-<p>Importing formerly exported .XML scans.</p>
+<p>1 Importing formerly exported .XML scans.</p>
 
 ## SQL-Logic-1
+
 ```SQL
 use [DBA];
 set nocount on
@@ -192,8 +193,9 @@ exec (@insert_xml_data) --for xml path(''), type
 exec (@main_select)
 ```
  
-<p>Performing direct queries against the source tables.</p>
+<p>2 Performing direct queries against the source tables.</p>
 ## SQL-Logic-2
+
 ```SQL
 use master 
 set nocount on
@@ -316,10 +318,7 @@ while   @iid <= @maxid
         Where [InstanceID] = @iid;
         Set @iid = @iid + 1
     end
-				 
 
-----------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
 -- create and capture XML file source information
 
@@ -445,11 +444,6 @@ insert into @job_details select	@dbprotect_job_name, @dbprotect_report_name, @db
 
 
 ----------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------
-
-
-----------------------------------------------------------------------------------------
 -- create and capture SQL Version info.
 
 declare @version_info	table
@@ -457,7 +451,7 @@ declare @version_info	table
 	[Server_Name]		varchar(255)
 ,	[SQL_Instance]		varchar(255)
 ,	[SQL_Version]		varchar(255)
-,	[SQL_Build]			varchar(255)
+,	[SQL_Build]		varchar(255)
 ,	[SQL_Edition]		varchar(255)
 )
 
@@ -472,7 +466,7 @@ when left(cast(serverproperty('productversion') as varchar), 4) = '13.0' then 'S
 when left(cast(serverproperty('productversion') as varchar), 4) = '12.0' then 'SQL 2014 ' + cast(serverproperty('productlevel') as varchar)
 when left(cast(serverproperty('productversion') as varchar), 4) = '11.0' then 'SQL 2012 ' + cast(serverproperty('productlevel') as varchar)
 end
-,	'SQLBuild'			= cast(serverproperty('productversion') as nvarchar(25))
+,	'SQLBuild'		= cast(serverproperty('productversion') as nvarchar(25))
 ,	'SQLEdition'		= cast(serverproperty('edition') as varchar)
 
  
@@ -480,7 +474,7 @@ end
 ----------------------------------------------------------------------------------------
 -- create HTML\xml variables
 
-declare @HTML_BODY				nvarchar(max)
+declare @HTML_BODY			nvarchar(max)
 declare @xml_instance_info		nvarchar(max)
 declare @xml_version_info		nvarchar(max)
 declare	@XML_FILE_FOUND			nvarchar(max)
@@ -543,12 +537,7 @@ set @XML_SCANNED_ASSETS =
 	,   elements, type)
 	as nvarchar(max)
 		)
-
-
 ----------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------
-
 -- percentage of categories
 select 
 	[check_id]
@@ -590,10 +579,6 @@ group by
 order by
 	convert(double precision, round(count(*) * 100.0 /sum(count(*)) over(), 0)) asc
 
-
-----------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------
-
 ----------------------------------------------------------------------------------------
 -- set table framework for XML percent categories
 declare @percent_categories	table ([line_id] int identity(1,1), [category] varchar(255), [percent] int, [percent_diff] int)
@@ -634,7 +619,6 @@ set @XML_PERCENT_CATEGORIES =
 	as nvarchar(max)
 		)
  
-
  ----------------------------------------------------------------------------------------
 -- set table framework for XML percent risk
 
@@ -668,7 +652,6 @@ set @XML_PERCENT_RISK =
 	,   elements, type)
 	as nvarchar(max)
 		)
-
 
 ----------------------------------------------------------------------------------------
 -- set XML for previous scans
@@ -705,7 +688,6 @@ set @XML_PREVIOUS_SCANS =
 	,   elements, type)
 	as nvarchar(max)
 		)
-
 
 ----------------------------------------------------------------------------------------
 -- set XML for instance_info
@@ -752,7 +734,6 @@ set @xml_version_info =
 	,   elements, type)
 	as nvarchar(max)
 		)
-
 
 ----------------------------------------------------------------------------------------
 -- format email
@@ -824,14 +805,12 @@ set @HTML_BODY =
 </P>
 <hr width=100% color=#f8ab0c>
 
-
 <ul>
   <li><p style="color: #f8ab0c;">Job Name: </p>' + (select @dbprotect_job_name)			+ '</li>
   <li><p style="color: #f8ab0c;">Report Name: </p>' + (select @dbprotect_report_name)	+ '</li>
   <li><p style="color: #f8ab0c;">Custom Label: </p>' + (select @dbprotect_custom_label) + '</li>
 </ul> 
-
-							
+						
 <p>XML File Info:</p>
 <table border = 1>
 <tr>
@@ -890,7 +869,6 @@ set @HTML_BODY =
 		</tr>'        
          
 + @XML_PREVIOUS_SCANS + '</table>
-
 
 <p>Scan Results were imported into the following database system:</p>
 
